@@ -53,7 +53,7 @@ if bufwinnr(1)
     map - <C-W>-
 endif
 
-" Dispable arrow keys
+" Disable arrow keys
 nnoremap <up> :echoe "Use k"<CR>
 nnoremap <down> :echoe "Use j"<CR>
 nnoremap <left> :echoe "Use h"<CR>
@@ -79,6 +79,9 @@ map <C-_> :tab tag <C-R>=expand("<cword>")<CR><CR>
 
 " Bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" Azerty sucks
+map ; .
 
 " CtrlP
 let g:ctrlp_working_path_mode = 2 " Smart path mode
@@ -125,6 +128,9 @@ function! InsertTabWrapper()
     endif
 endfunction
 inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+
+" Git syntax highlighting sucks in French...
+let g:fugitive_git_executable = 'LANG=en git'
 
 " vdebug
 " TODO : move this in a project specific file, or find a way to look in git root dir
