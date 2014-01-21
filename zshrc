@@ -13,7 +13,7 @@ alias tmux='env TERM="screen-256color" tmux' #make gnome-terminal, tmux, solariz
 
 # Tmuxinator
 EDITOR='vim'
-source ~/.local/bin/tmuxinator.zsh
+#source ~/.local/bin/tmuxinator.zsh
 
 # z
 _Z_DATA=~/.zdata
