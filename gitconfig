@@ -1,0 +1,12 @@
+[color]
+	ui = auto
+[user]
+	name = Kim Laï Trinh
+	email = kimlai@lrqdo.fr
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+[merge]
+	tool = fugitive
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
