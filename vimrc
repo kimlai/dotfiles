@@ -24,6 +24,7 @@ set history=500 " Increase history from default 20 to 500
 set incsearch "Highlight dynamically as pattern is typed
 set laststatus=2 " Always show status line
 set list listchars=tab:»·,trail:· " display extra whitespaces
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set number " Show line numbers
 set ruler " Show the cursor position
 set scrolloff=4 " Minimal number of screen lines to keep above and below the cursor
@@ -59,8 +60,14 @@ nnoremap <down> :echoe "Use j"<CR>
 nnoremap <left> :echoe "Use h"<CR>
 nnoremap <right> :echoe "Use l"<CR>
 
+" When in insert mode, type kj instead of <ESC> to go back to normal mode
+imap kj <ESC>
+
 " list opened buffers
 map <Leader>ls :buffers<CR>
+
+" Gundo
+map <Leader>u :GundoToggle<CR>
 
 " Insert newline
 map <leader><Enter> o<ESC>
