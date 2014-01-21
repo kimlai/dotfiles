@@ -5,7 +5,6 @@ ZSH_THEME="af-magic"
 DEFAULT_USER="kimlai"
 
 # Aliases
-alias bastion="ssh -t sshgate@89.31.147.28 -p 2223 "
 alias cim="vim"
 alias git='LANG=en_GB.utf8 git' # git in English, cause vim doesn't display the proper colors in French
 alias rg="rgrep . -e "
@@ -13,7 +12,7 @@ alias tmux='env TERM="screen-256color" tmux' #make gnome-terminal, tmux, solariz
 
 # Tmuxinator
 EDITOR='vim'
-#source ~/.local/bin/tmuxinator.zsh
+source ~/.local/bin/tmuxinator.zsh
 
 # z
 _Z_DATA=~/.zdata
@@ -28,3 +27,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:~/.scripts
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
