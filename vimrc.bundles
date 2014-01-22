@@ -7,15 +7,19 @@ call vundle#rc()
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
 
+
+Bundle 'SirVer/ultisnips'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'benmills/vimux'
-Bundle 'git@github.com:Lokaltog/powerline.git'
+Bundle 'bling/vim-airline'
+Bundle 'edkolev/tmuxline.vim'
+Bundle 'honza/vim-snippets'
 Bundle 'joonty/vdebug.git'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
-Bundle 'sjl/gundo.vim'
 Bundle 'scrooloose/syntastic'
+Bundle 'sjl/gundo.vim'
 Bundle 'stephpy/vim-php-cs-fixer'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'

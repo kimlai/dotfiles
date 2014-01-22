@@ -39,8 +39,8 @@ set wildmenu " Hitting <TAB> in command mode will show possible completions abov
 set wildmode=list:longest,list:full
 
 " Status line
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-let g:Powerline_symbols = 'fancy'
+let g:airline_powerline_fonts = 1
+let g:airline_theme='jellybeans'
 
 " Split navigation (Ctrl+j, Ctrl+k, Ctrl+h, Ctrl+h)
 nnoremap <C-J> <C-W><C-J>
