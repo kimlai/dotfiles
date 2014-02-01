@@ -17,14 +17,10 @@ alias tmux='env TERM="screen-256color" tmux' #make gnome-terminal, tmux, solariz
 EDITOR='vim'
 [[ -f ~/.local/bin/tmuxinator.zsh ]] && source ~/.local/bin/tmuxinator.zsh
 
-# z
-_Z_DATA=~/.zdata
-. ~/.z/z.sh
-
 # oh-my-zsh options
 DISABLE_AUTO_TITLE="true" # disable autosetting terminal title.
 COMPLETION_WAITING_DOTS="true" # red dots to be displayed while waiting for completion
-plugins=(git virtualenv)
+plugins=(git virtualenv z)
 
 source $ZSH/oh-my-zsh.sh
 
