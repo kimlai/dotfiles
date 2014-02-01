@@ -10,9 +10,12 @@ alias git='LANG=en_GB.utf8 git' # git in English, cause vim doesn't display the 
 alias rg="rgrep . -e "
 alias tmux='env TERM="screen-256color" tmux' #make gnome-terminal, tmux, solarized and vim play nice together
 
+# Solarized ls
+[[ -f ~/.dircolors ]] && eval `dircolors ~/.dircolors`
+
 # Tmuxinator
 EDITOR='vim'
-source ~/.local/bin/tmuxinator.zsh
+[[ -f ~/.local/bin/tmuxinator.zsh ]] && source ~/.local/bin/tmuxinator.zsh
 
 # z
 _Z_DATA=~/.zdata
