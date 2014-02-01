@@ -88,7 +88,8 @@ map <C-_> :tab tag <C-R>=expand("<cword>")<CR><CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Azerty sucks
-map ; .
+nnoremap ; .
+nnoremap . ;
 
 " CtrlP
 let g:ctrlp_working_path_mode = 2 " Smart path mode

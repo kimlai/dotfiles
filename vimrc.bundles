@@ -8,12 +8,13 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 
+"Bundle 'airblade/vim-gitgutter'
 Bundle 'SirVer/ultisnips'
-Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'benmills/vimux'
 Bundle 'bling/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
+Bundle 'henrik/vim-indexed-search'
 Bundle 'honza/vim-snippets'
 Bundle 'joonty/vdebug.git'
 Bundle 'kchmck/vim-coffee-script'
