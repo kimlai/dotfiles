@@ -40,7 +40,9 @@ set wildmode=list:longest,list:full
 
 " Status line
 let g:airline_powerline_fonts = 1
-let g:airline_theme='jellybeans'
+let g:airline_theme='solarized'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Split navigation (Ctrl+j, Ctrl+k, Ctrl+h, Ctrl+h)
 nnoremap <C-J> <C-W><C-J>

@@ -14,7 +14,7 @@ EDITOR='vim'
 # oh-my-zsh options
 DISABLE_AUTO_TITLE="true" # disable autosetting terminal title.
 COMPLETION_WAITING_DOTS="true" # red dots to be displayed while waiting for completion
-plugins=(git virtualenv z debian)
+plugins=(git virtualenv z debian vagrant)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -30,9 +30,18 @@ funtion please() {
     eval sudo $last_command
 }
 
+# cat, but with colors !
+function pygmentize_cat {
+    for arg in "$@"; do
+        pygmentize -g "${arg}" 2> /dev/null || /bin/cat "${arg}"
+    done
+}
+command -v pygmentize > /dev/null && alias cat=pygmentize_cat
+
 # Customize to your needs...
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:~/.scripts
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
+# Allow local modifications in ~/.zshrc.local
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
