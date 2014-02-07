@@ -18,6 +18,8 @@ plugins=(git virtualenv z debian vagrant)
 
 source $ZSH/oh-my-zsh.sh
 
+ZSH_THEME_GIT_PROMPT_PREFIX="$FG[075]("
+
 # Aliases
 alias cim="vim"
 alias git='LANG=en_GB.utf8 git' # git in English, cause vim doesn't display the proper colors in French
