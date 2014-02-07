@@ -1,0 +1,2 @@
+DOTFILES_DIRS="$HOME/Code/dotfiles"
+EXCLUDES="README.md *.bash"
