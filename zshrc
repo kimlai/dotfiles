@@ -31,6 +31,7 @@ funtion please() {
     last_command=$history[$[HISTCMD-1]]
     eval sudo $last_command
 }
+alias plz='please'
 
 # cat, but with colors !
 function pygmentize_cat {

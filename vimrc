@@ -33,7 +33,7 @@ set showcmd " Show (partial) command in the last line of the screen
 set softtabstop=4 " Number of insterted spaces when <TAB> or <Bs> are used
 set splitbelow " New windows go below
 set splitright " New windows go right
-set updatetime=750
+set updatetime=1250
 set wildignore+=*/cache/*,*/logs/*,*/vendor/* "symfony2
 set wildmenu " Hitting <TAB> in command mode will show possible completions above command line.
 set wildmode=list:longest,list:full
@@ -100,7 +100,6 @@ let g:ctrlp_mru_files = 1 " Enable Most Recently Used files feature
 let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
 
 " Filetype syntax
-autocmd BufRead,BufNewFile *.twig set filetype=htmljinja " Twig syntax highlighting
 autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab " Coffescript indentation
 autocmd Filetype gitcommit setlocal spell textwidth=72 " Git commit messages spellcheck + word-wrap
 
