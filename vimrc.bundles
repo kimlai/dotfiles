@@ -7,7 +7,6 @@ call vundle#rc()
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
 
-
 "Bundle 'airblade/vim-gitgutter'
 Bundle 'SirVer/ultisnips'
 Bundle 'altercation/vim-colors-solarized'
@@ -26,7 +25,10 @@ Bundle 'rainux/vim-vala.git'
 Bundle 'scrooloose/syntastic'
 Bundle 'sjl/gundo.vim'
 Bundle 'stephpy/vim-php-cs-fixer'
+Bundle 'tomtom/tcomment_vim'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-git'
+Bundle 'tpope/vim-surround'
 
 filetype plugin indent on
