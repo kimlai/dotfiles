@@ -37,6 +37,7 @@ set updatetime=1250
 set wildignore+=*/cache/*,*/logs/*,*/vendor/* "symfony2
 set wildmenu " Hitting <TAB> in command mode will show possible completions above command line.
 set wildmode=list:longest,list:full
+set diffopt+=vertical
 
 " Status line
 let g:airline_powerline_fonts = 1
@@ -51,12 +52,12 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Faster split resizing (+,-)
-if bufwinnr(1)
-    map + <C-W>+
-    map - <C-W>-
-endif
-
+" " Faster split resizing (+,-)
+" if bufwinnr(1)
+"     map + <C-W>+
+"     map - <C-W>-
+" endif
+"
 " Disable arrow keys
 nnoremap <up> :echoe "Use k"<CR>
 nnoremap <down> :echoe "Use j"<CR>
@@ -66,11 +67,8 @@ nnoremap <right> :echoe "Use l"<CR>
 " When in insert mode, type kj instead of <ESC> to go back to normal mode
 imap kj <ESC>
 
-" list opened buffers
-map <Leader>ls :buffers<CR>
-
-" Gundo
-map <Leader>u :GundoToggle<CR>
+" Automatially insert use statement for class under the cursor.
+noremap <Leader>u :call PhpInsertUse()<CR>
 
 " Insert newline
 map <leader><Enter> o<ESC>
@@ -81,27 +79,52 @@ nnoremap <leader>S :%s/\s\+$//<cr>:let @/=''<CR>
 " Yank from cursor to end of line
 nnoremap Y y$
 
+" Create a getter for the word under the cursor
+map <leader>g mayiwGO<CR>public function get<ESC>pblll~A()<CR>{<CR>return $this-><ESC>pA;<CR>}<ESC>gg=G`a:delm a<CR>
+
 " Make mouse middle click paste without formatting it.
 map <MouseMiddle> <Esc>"*p
-
-" Jump to tag in new tab with CTRL+_
-map <C-_> :tab tag <C-R>=expand("<cword>")<CR><CR>
 
 " Bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
+" Stop that stupid window from popping up
+map q: :q
+
+" Go to the previously viewed buffer
+:nmap <C-e> :e#<CR>
+
+" Open ctrl-p buffer search
+:nnoremap , :CtrlPBuffer<CR>
+
 " Azerty sucks
-nnoremap ; .
 nnoremap . ;
+nnoremap ; .
+
+" Sort use statements
+nnoremap <Leader>so magg/use<CR>vip:sort<CR>`a:delmarks a<CR>
+
+" Move lines in visual mode https://gist.github.com/Integralist/ce1227dcee7b64529202
+xmap <C-k> :m '< -- <CR> gv
+xmap <C-j> :m '> +  <CR> gv
 
 " CtrlP
 let g:ctrlp_working_path_mode = 2 " Smart path mode
-let g:ctrlp_mru_files = 1 " Enable Most Recently Used files feature
+let g:ctrlp_mru_files = 0 " Disable Most Recently Used files feature
 let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
+
+" vim-sneak
+let g:sneak#s_next = 1
+map . <Plug>SneakNext
 
 " Filetype syntax
 autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab " Coffescript indentation
+autocmd BufNewFile,BufReadPost *.feature setl shiftwidth=2 expandtab " Behat indentation
 autocmd Filetype gitcommit setlocal spell textwidth=72 " Git commit messages spellcheck + word-wrap
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" relative and absolute line numbers
+
 
 " The Silver Searcher
 if executable('ag')
