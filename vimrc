@@ -109,7 +109,7 @@ xmap <C-k> :m '< -- <CR> gv
 xmap <C-j> :m '> +  <CR> gv
 
 " CtrlP
-let g:ctrlp_working_path_mode = 2 " Smart path mode
+let g:ctrlp_working_path_mode = 'r' " Wroking dir is the nearest ancestor that contains a `.git` folder
 let g:ctrlp_mru_files = 0 " Disable Most Recently Used files feature
 let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
 
