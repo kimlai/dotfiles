@@ -16,7 +16,7 @@ endif
 
 " Miscellaenous configuration
 set backspace=indent,eol,start " Make backspace behave like most editors
-set complete=.,w,t
+set complete=.,w,b,u,t
 set cursorline " Highlight current line
 set expandtab "Expand tabs to spaces
 set hidden " When a buffer is brought to foreground, remember history and marks
@@ -117,14 +117,13 @@ let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
 let g:sneak#s_next = 1
 map . <Plug>SneakNext
 
+map <Leader>T :Dispatch<CR>
+
 " Filetype syntax
 autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab " Coffescript indentation
 autocmd BufNewFile,BufReadPost *.feature setl shiftwidth=2 expandtab " Behat indentation
 autocmd Filetype gitcommit setlocal spell textwidth=72 " Git commit messages spellcheck + word-wrap
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" relative and absolute line numbers
-
 
 " The Silver Searcher
 if executable('ag')
