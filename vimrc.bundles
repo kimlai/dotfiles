@@ -6,6 +6,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle
 Plugin 'SirVer/ultisnips'
+Plugin 'afternoon/vim-phpunit'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'arnaud-lb/vim-php-namespace'
@@ -27,6 +28,7 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-surround'
 
 " Syntax plugins
