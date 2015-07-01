@@ -1,11 +1,5 @@
 set nocompatible " Make vim behave in a more useful way
 
-" Colors and theme
-set t_Co=16
-set background=dark
-syntax enable
-colorscheme solarized
-
 " Nicer mapleader
 let mapleader=" "
 
@@ -13,6 +7,12 @@ let mapleader=" "
 if filereadable(expand("~/.vimrc.bundles"))
     source ~/.vimrc.bundles
 endif
+
+" Colors and theme
+set t_Co=16
+set background=dark
+syntax enable
+colorscheme solarized
 
 " Miscellaenous configuration
 set backspace=indent,eol,start " Make backspace behave like most editors
