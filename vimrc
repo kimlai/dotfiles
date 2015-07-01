@@ -117,9 +117,9 @@ nnoremap ; .
 " Sort use statements
 nnoremap <Leader>so magg/use<CR>vip:sort<CR>`a:delmarks a<CR>
 
-" Move lines in visual mode https://gist.github.com/Integralist/ce1227dcee7b64529202
-xmap <C-k> :m '< -- <CR> gv
-xmap <C-j> :m '> +  <CR> gv
+" Move between buffers using Ctrl-[h-l]
+nnoremap <C-h> :bn<CR>
+nnoremap <C-l> :bp<CR>
 
 " CtrlP
 let g:ctrlp_working_path_mode = 'r' " Wroking dir is the nearest ancestor that contains a `.git` folder
