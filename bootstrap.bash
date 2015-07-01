@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
 
-release=$(lsb_release -c | cut -f 2)
-
-# latest git
-[[ -f "/etc/apt/sources.list.d/git-core-ppa-$release.list" ]] || sudo add-apt-repository -y ppa:git-core/ppa
-
 sudo apt-get update
-sudo apt-get install git vim zsh
+sudo apt-get install -y git vim zsh tmux tig httpie
 
+#zsh
 chsh -s $(which zsh)
-
-# oh my zsh
 wget --no-check-certificate https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - | sh
+
+##dotfiles
+DOTFILES_DIR=$HOME/Code/dotfiles
+mkdir -p $DOTFILES_DIR
+git clone https://github.com/kimlai/dotfiles.git $DOTFILES_DIR
+
+for configFile in $(ls -I bootstrap.bash -I rcrc -I README.md $DOTFILES_DIR)
+do
+    ln -snf $DOTFILES_DIR/$configFile .$configFile
+done
+
+##vim
+git clone https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall
