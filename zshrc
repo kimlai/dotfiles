@@ -9,12 +9,11 @@ DEFAULT_USER="kimlai"
 
 # Tmuxinator
 EDITOR='vim'
-[[ -f ~/.local/bin/tmuxinator.zsh ]] && source ~/.local/bin/tmuxinator.zsh
 
 # oh-my-zsh options
 DISABLE_AUTO_TITLE="true" # disable autosetting terminal title.
 COMPLETION_WAITING_DOTS="true" # red dots to be displayed while waiting for completion
-plugins=(git virtualenv z debian vagrant)
+plugins=(git z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -32,14 +31,6 @@ funtion please() {
     eval sudo $last_command
 }
 alias plz='please'
-
-# cat, but with colors !
-function pygmentize_cat {
-    for arg in "$@"; do
-        pygmentize -g "${arg}" 2> /dev/null || /bin/cat "${arg}"
-    done
-}
-command -v pygmentize > /dev/null && alias cat=pygmentize_cat
 
 # Customize to your needs...
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:~/.scripts
