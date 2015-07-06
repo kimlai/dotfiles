@@ -65,12 +65,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" " Faster split resizing (+,-)
-" if bufwinnr(1)
-"     map + <C-W>+
-"     map - <C-W>-
-" endif
-"
 " Disable arrow keys
 nnoremap <up> :echoe "Use k"<CR>
 nnoremap <down> :echoe "Use j"<CR>
@@ -83,9 +77,6 @@ imap kj <ESC>
 " Automatially insert use statement for class under the cursor.
 noremap <Leader>u :call PhpInsertUse()<CR>
 
-" Insert newline
-map <leader><Enter> o<ESC>
-
 " Remove trailing whitespace with <leader>S
 nnoremap <leader>S :%s/\s\+$//<cr>:let @/=''<CR>
 
@@ -95,12 +86,6 @@ nnoremap Y y$
 " Create a getter for the word under the cursor
 map <leader>g mayiwGO<CR>public function get<ESC>pblll~A()<CR>{<CR>return $this-><ESC>pA;<CR>}<ESC>gg=G`a:delm a<CR>
 
-" Make mouse middle click paste without formatting it.
-map <MouseMiddle> <Esc>"*p
-
-" Bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
 " Stop that stupid window from popping up
 map q: :q
 
@@ -108,7 +93,7 @@ map q: :q
 :nmap <C-e> :e#<CR>
 
 " Open ctrl-p buffer search
-:nnoremap , :CtrlPBuffer<CR>
+:nnoremap <C-P> :CtrlPBuffer<CR>
 
 " Azerty sucks
 nnoremap . ;
@@ -118,17 +103,13 @@ nnoremap ; .
 nnoremap <Leader>so magg/use<CR>vip:sort<CR>`a:delmarks a<CR>
 
 " Move between buffers using Ctrl-[h-l]
-nnoremap <C-h> :bn<CR>
-nnoremap <C-l> :bp<CR>
+nnoremap <C-h> :bp<CR>
+nnoremap <C-l> :bn<CR>
 
 " CtrlP
 let g:ctrlp_working_path_mode = 'r' " Wroking dir is the nearest ancestor that contains a `.git` folder
 let g:ctrlp_mru_files = 0 " Disable Most Recently Used files feature
 let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
-
-" vim-sneak
-let g:sneak#s_next = 1
-map . <Plug>SneakNext
 
 map <Leader>T :Dispatch<CR>
 
@@ -161,23 +142,5 @@ autocmd BufReadPost *
         \   exe "normal g`\"" |
     \ endif
 
-" Tab completion
-" will insert tab at beginning of line,
-" will use completion if not at beginning
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-n>"
-    endif
-endfunction
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-
 " Git syntax highlighting sucks in French...
 let g:fugitive_git_executable = 'LANG=en git'
-
-" vdebug
-" TODO : move this in a project specific file, or find a way to look in git root dir
-let g:vdebug_options = { 'server' : "10.9.8.1" } "vagrant remote host
-let g:vdebug_options['path_maps'] = {"/vagrant/": "/home/kimlai/Documents/Projets/lrqdo/back-web/"}
