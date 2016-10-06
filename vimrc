@@ -2,6 +2,8 @@ set nocompatible " Make vim behave in a more useful way
 
 " Nicer mapleader
 let mapleader=" "
+let maplocalleader=" "
+
 
 " Vundle bundles
 if filereadable(expand("~/.vimrc.bundles"))
@@ -15,6 +17,7 @@ syntax enable
 colorscheme solarized
 
 " Miscellaenous configuration
+set backupcopy=yes " Help webpack watcher understand that a file was written to disk
 set backspace=indent,eol,start " Make backspace behave like most editors
 set complete=.,w,b,u,t
 set cursorline " Highlight current line
@@ -118,6 +121,8 @@ autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab " Coffescrip
 autocmd BufNewFile,BufReadPost *.feature setl shiftwidth=2 expandtab " Behat indentation
 autocmd Filetype gitcommit setlocal spell textwidth=72 " Git commit messages spellcheck + word-wrap
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+"au FileType elm nmap <leader>d <Plug>(elm-show-docs)
+"au FileType elm nmap <leader>w <Plug>(elm-browse-docs)
 
 " The Silver Searcher
 if executable('ag')
@@ -144,3 +149,7 @@ autocmd BufReadPost *
 
 " Git syntax highlighting sucks in French...
 let g:fugitive_git_executable = 'LANG=en git'
+
+let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
+

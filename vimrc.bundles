@@ -24,8 +24,10 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-surround'
+"Plugin 'benekastah/neomake'
 
 " Syntax plugins
+Plugin 'elmcast/elm-vim'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'evidens/vim-twig'

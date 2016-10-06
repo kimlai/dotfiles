@@ -13,7 +13,7 @@ EDITOR='vim'
 # oh-my-zsh options
 DISABLE_AUTO_TITLE="true" # disable autosetting terminal title.
 COMPLETION_WAITING_DOTS="true" # red dots to be displayed while waiting for completion
-plugins=(git z)
+plugins=(git z catimg calc)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -24,6 +24,7 @@ alias cim="vim"
 alias git='LANG=en_GB.utf8 git' # git in English, cause vim doesn't display the proper colors in French
 alias rg="rgrep . -e "
 alias tmux='env TERM="screen-256color" tmux' #make gnome-terminal, tmux, solarized and vim play nice together
+alias compose='docker-compose'
 
 unalias please
 funtion please() {
@@ -36,6 +37,8 @@ alias plz='please'
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:~/.scripts
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+PATH=$PATH:$HOME/.npm-packages/bin
+export N_PREFIX=$HOME
 
 # Allow local modifications in ~/.zshrc.local
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
