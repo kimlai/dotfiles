@@ -12,6 +12,7 @@ require('packer').startup(function(use)
   use('tpope/vim-surround')
   use('tpope/vim-repeat')
   use('tpope/vim-fugitive')
+  use('numToStr/Comment.nvim')
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
@@ -80,6 +81,12 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   command = 'lua vim.lsp.buf.formatting_sync()',
 })
 
+-- Misc plugins setup
+require('Comment').setup()
+require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
+require('lspconfig').tsserver.setup({}) -- javascript LSP support
+require('nvim-treesitter.configs').setup({ highlight = { enable = true } }) -- better syntax highlighting
+
 -- Telescope mappings
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
 vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>')
@@ -102,12 +109,6 @@ require('telescope').setup({
     }
   }
 })
-
-require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
-
-require('lspconfig').tsserver.setup({})
-
-require('nvim-treesitter.configs').setup({ highlight = { enable = true } })
 
 ------------------------------
 -- Scala support using metals
