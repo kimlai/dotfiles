@@ -8,11 +8,11 @@ require('packer').startup(function(use)
   use({'dracula/vim', as = 'dracula'}) -- vim theme
   use('farmergreg/vim-lastplace') -- restore last position when opening a buffer
   use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
-  use('neovim/nvim-lspconfig')
-  use('tpope/vim-surround')
-  use('tpope/vim-repeat')
-  use('tpope/vim-fugitive')
-  use('numToStr/Comment.nvim')
+  use('neovim/nvim-lspconfig') -- default configuration for most LSP servers
+  use('tpope/vim-surround') -- adds some motions to work with parenthesis, quotes, brackets etc.
+  use('tpope/vim-repeat') -- repeats vim-surround motions using .
+  use('tpope/vim-fugitive') -- git wrapper to use git from within vim
+  use('numToStr/Comment.nvim') -- add/toggle comments
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
@@ -45,14 +45,13 @@ vim.opt.undofile = true
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 
 -- Misc
-vim.opt.hlsearch = false -- Do not highlight search all matches
+vim.opt.hlsearch = false -- Do not highlight search matches
 vim.opt.scrolloff = 8 -- Minimal number of screen lines to keep above and below the cursor
 vim.opt.swapfile = false -- Do not use swapfiles
 
 vim.g.mapleader = " "
 
 vim.keymap.set('i', 'kj', '<ESC>') -- When in insert mode, type kj instead of <ESC> to go back to normal mode
-vim.keymap.set('n', '<C-a>', 'a <ESC>r') -- Append char after cursor position
 
  -- Some azerty fixes
 vim.keymap.set('n', ';', '.')
