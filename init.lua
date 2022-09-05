@@ -8,6 +8,10 @@ require('packer').startup(function(use)
   use({'dracula/vim', as = 'dracula'}) -- vim theme
   use('farmergreg/vim-lastplace') -- restore last position when opening a buffer
   use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
+  use('neovim/nvim-lspconfig')
+  use('tpope/vim-surround')
+  use('tpope/vim-repeat')
+  use('tpope/vim-fugitive')
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
@@ -100,6 +104,10 @@ require('telescope').setup({
 })
 
 require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
+
+require('lspconfig').tsserver.setup({})
+
+require('nvim-treesitter.configs').setup({ highlight = { enable = true } })
 
 ------------------------------
 -- Scala support using metals
