@@ -146,6 +146,7 @@ function status_line()
     '%m', -- modified flag
     '%r', -- readonly flag
     metals_status(),
+    '%{FugitiveStatusline()}',
     '%=', -- separator between the left and the right parts
     '%y ', -- filetype
     '%l,%c', -- line,column
