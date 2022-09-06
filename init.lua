@@ -12,6 +12,7 @@ require('packer').startup(function(use)
   use('tpope/vim-surround') -- adds some motions to work with parenthesis, quotes, brackets etc.
   use('tpope/vim-repeat') -- repeats vim-surround motions using .
   use('tpope/vim-fugitive') -- git wrapper to use git from within vim
+  use('airblade/vim-gitgutter') -- show git diff information in the sign column
   use('numToStr/Comment.nvim') -- add/toggle comments
 
   -- autocompletion
@@ -48,6 +49,7 @@ vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.hlsearch = false -- Do not highlight search matches
 vim.opt.scrolloff = 8 -- Minimal number of screen lines to keep above and below the cursor
 vim.opt.swapfile = false -- Do not use swapfiles
+vim.opt.updatetime = 100 -- update gitgutter info every 100ms
 
 vim.g.mapleader = " "
 
