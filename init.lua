@@ -9,8 +9,7 @@ require('packer').startup(function(use)
   use('farmergreg/vim-lastplace') -- restore last position when opening a buffer
   use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
   use('neovim/nvim-lspconfig') -- default configuration for most LSP servers
-  use('tpope/vim-surround') -- adds some motions to work with parenthesis, quotes, brackets etc.
-  use('tpope/vim-repeat') -- repeats vim-surround motions using .
+  use('kylechui/nvim-surround') -- adds some motions to work with parenthesis, quotes, brackets etc.
   use('tpope/vim-fugitive') -- git wrapper to use git from within vim
   use('airblade/vim-gitgutter') -- show git diff information in the sign column
   use('numToStr/Comment.nvim') -- add/toggle comments
@@ -89,6 +88,7 @@ require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lin
 require('lspconfig').tsserver.setup({}) -- javascript LSP support
 require('nvim-treesitter.configs').setup({ highlight = { enable = true } }) -- better syntax highlighting
 require('rest-nvim').setup()
+require('nvim-surround').setup()
 
 -- Telescope mappings
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
