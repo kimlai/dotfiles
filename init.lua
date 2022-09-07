@@ -59,10 +59,10 @@ vim.keymap.set('i', 'kj', '<ESC>') -- When in insert mode, type kj instead of <E
  -- Some azerty fixes
 vim.keymap.set('n', ';', '.')
 vim.keymap.set('n', '.', ';')
-vim.keymap.set({'n', 'v'}, 'm', '$')
-vim.keymap.set({'n', 'v'}, 'ç', '^')
-vim.keymap.set({'n', 'v'}, 'à', '}')
-vim.keymap.set({'n', 'v'}, 'é', '{')
+vim.keymap.set({'n', 'v', 'o'}, 'm', '$')
+vim.keymap.set({'n', 'v', 'o'}, 'é', '^')
+vim.keymap.set({'n', 'v', 'o'}, 'à', '}')
+vim.keymap.set({'n', 'v', 'o'}, 'ç', '{')
 vim.keymap.set('n', '<C-ù>', '<C-]>')
 
 -- Move between buffers using Ctrl-[h-l]
