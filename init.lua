@@ -14,6 +14,7 @@ require('packer').startup(function(use)
   use('tpope/vim-fugitive') -- git wrapper to use git from within vim
   use('airblade/vim-gitgutter') -- show git diff information in the sign column
   use('numToStr/Comment.nvim') -- add/toggle comments
+  use({"NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" }}) -- REST client for http files
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
@@ -87,6 +88,7 @@ require('Comment').setup()
 require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
 require('lspconfig').tsserver.setup({}) -- javascript LSP support
 require('nvim-treesitter.configs').setup({ highlight = { enable = true } }) -- better syntax highlighting
+require('rest-nvim').setup()
 
 -- Telescope mappings
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
@@ -191,3 +193,5 @@ cmp.setup({
     ghost_text = true
   }
 })
+
+vim.keymap.set('n', '<leader>rh', '<Plug>RestNvim')
