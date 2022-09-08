@@ -82,6 +82,19 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   command = 'lua vim.lsp.buf.formatting_sync()',
 })
 
+-- highlight yanked texted
+local yank = vim.api.nvim_create_augroup('yank', {})
+vim.api.nvim_create_autocmd('TextYankPost', {
+    group = yank,
+    pattern = '*',
+    callback = function()
+        vim.highlight.on_yank({
+            higroup = 'IncSearch',
+            timeout = 60,
+        })
+    end,
+})
+
 -- Misc plugins setup
 require('Comment').setup()
 require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
