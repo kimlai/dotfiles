@@ -147,10 +147,6 @@ vim.api.nvim_create_autocmd("FileType", {
   group = metals,
 })
 
-local function metals_status()
-  return vim.g["metals_status"] or ""
-end
-
 -------------------------------------------------------------------------------------------------
 -- status line
 -- https://unix.stackexchange.com/questions/224771/what-is-the-format-of-the-default-statusline
@@ -162,13 +158,13 @@ end
 
 function status_line()
   return table.concat({
+    '%{FugitiveStatusline()} ',
     '%f ', -- buffer name (path to a file, or something)
     '%h', -- help flag
     '%w', -- preview flag
     '%m', -- modified flag
     '%r', -- readonly flag
     metals_status(),
-    '%{FugitiveStatusline()}',
     '%=', -- separator between the left and the right parts
     '%y ', -- filetype
     '%l,%c', -- line,column
@@ -178,6 +174,14 @@ function status_line()
 end
 
 vim.opt.statusline = "%!luaeval('status_line()')"
+-- those colors are hardcoded from the Dracula theme
+vim.cmd[[highlight StatusLine guibg=#282A36]]
+vim.cmd[[highlight StatusLineNC guibg=#282A36]]
+vim.cmd[[highlight StatusLine guifg=#6272A4]]
+vim.cmd[[highlight StatusLineNC guifg=#6272A4]]
+
+vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
 
 ----------------------------------
 -- autocompletion using nvim-cmp
