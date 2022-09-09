@@ -163,7 +163,7 @@ end
 
 function status_line()
   return table.concat({
-    '%1* ' .. fugitive_status() .. ' %* ',
+    '%1* ' .. fugitive_status() .. '%* ',
     '%f ', -- buffer name (path to a file, or something)
     '%h', -- help flag
     '%w', -- preview flag
@@ -180,9 +180,10 @@ end
 
 vim.opt.statusline = "%!luaeval('status_line()')"
 -- those colors are hardcoded from the Dracula theme
-vim.cmd[[highlight StatusLine guibg=#282A36 guifg=#6272A4]]
-vim.cmd[[highlight StatusLineNC guibg=#282A36 guifg=#6272A4]]
-vim.cmd[[highlight User1 guibg=#6272A4]]
+vim.cmd[[highlight StatusLine guibg=#282A36]]
+vim.cmd[[highlight StatusLineNC guibg=#282A36]]
+vim.cmd[[highlight StatusLine guifg=#6272A4]]
+vim.cmd[[highlight StatusLineNC guifg=#6272A4]]
 
 vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
