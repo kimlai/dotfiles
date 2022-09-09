@@ -156,9 +156,14 @@ local function metals_status()
   return vim.g["metals_status"] or ""
 end
 
+local function fugitive_status()
+  local _, _, fugitive_status =  string.find(vim.api.nvim_eval('FugitiveStatusline()'), '%[Git%((.+)%)%]')
+  return fugitive_status or ''
+end
+
 function status_line()
   return table.concat({
-    '%{FugitiveStatusline()} ',
+    '%PMenu ' .. fugitive_status() .. ' ',
     '%f ', -- buffer name (path to a file, or something)
     '%h', -- help flag
     '%w', -- preview flag
