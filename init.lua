@@ -170,13 +170,17 @@ end
 
 local function fugitive_status()
   local _, _, fugitive_status =  string.find(vim.api.nvim_eval('FugitiveStatusline()'), '%[Git%((.+)%)%]')
-  return fugitive_status or ''
+  if fugitive_status then
+    return '%1* ' .. fugitive_status .. ' %* ' -- use a UserGroup highlight to style the status
+  else
+    return ''
+  end
 end
 
 function status_line()
   return table.concat({
-    '%1* ' .. fugitive_status() .. ' %* ',
-    '%f ', -- buffer name (path to a file, or something)
+    fugitive_status(),
+    '%t ', --file name (tail) of file in the buffer.
     '%h', -- help flag
     '%w', -- preview flag
     '%m', -- modified flag
