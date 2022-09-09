@@ -116,6 +116,17 @@ vim.keymap.set('n', '<leader>fd', '<cmd>Telescope lsp_definitions<cr>')
 vim.keymap.set('n', '<leader>fc', '<cmd>Telescope commands<cr>')
 require('telescope').setup({
   defaults = {
+    path_display = function(opts, path)
+      local substitutions = {
+        ["scala/com/bestmile"] = "s/c/bm",
+        ["resources/com/bestmile"] = "r/c/bm",
+        ["infrastructure"] = "infra",
+      }
+      for k,v in pairs(substitutions) do
+        path = string.gsub(path, k, v)
+      end
+      return path
+    end,
     mappings = {
       i = {
         ["<C-k>"] = "move_selection_previous",
