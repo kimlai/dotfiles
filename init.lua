@@ -121,7 +121,8 @@ require('telescope').setup({
         ["scala/com/bestmile"] = "s/c/bm",
         ["resources/com/bestmile"] = "r/c/bm",
         ["infrastructure"] = "infra",
-        ["/Users/z0185480/Documents/Code"] = "~/Code"
+        [os.getenv("HOME") .. "/Documents/Code"] = "~/Code",
+        [os.getenv("HOME")] = "~"
       }
       for k,v in pairs(substitutions) do
         path = string.gsub(path, k, v)
