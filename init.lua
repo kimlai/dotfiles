@@ -14,6 +14,7 @@ require('packer').startup(function(use)
   use('airblade/vim-gitgutter') -- show git diff information in the sign column
   use('numToStr/Comment.nvim') -- add/toggle comments
   use({"NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" }}) -- REST client for http files
+  use({'ThePrimeagen/harpoon', requires = { 'nvim-lua/plenary.nvim' }}) -- mark files for quick access
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
@@ -235,3 +236,15 @@ cmp.setup({
 })
 
 vim.keymap.set('n', '<leader>rh', '<Plug>RestNvim')
+
+----------------------------------
+-- Harpoon key bindings
+----------------------------------
+require('harpoon').setup()
+vim.keymap.set('n', '<C-e>', function() require("harpoon.ui").toggle_quick_menu() end)
+vim.keymap.set('n', '<leader>a', function() require("harpoon.mark").add_file() end)
+vim.keymap.set('n', '<leader>&', function() require("harpoon.ui").nav_file(1) end)
+vim.keymap.set('n', '<leader>é', function() require("harpoon.ui").nav_file(2) end)
+vim.keymap.set('n', '<leader>"', function() require("harpoon.ui").nav_file(3) end)
+vim.keymap.set('n', "<leader>'", function() require("harpoon.ui").nav_file(4) end)
+vim.keymap.set("n", '<leader>(', function() require("harpoon.ui").nav_file(4) end)
