@@ -47,6 +47,7 @@ vim.opt.undofile = true
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 
 -- Misc
+vim.opt.list = true -- show trailing spaces, tabs and &nbsp
 vim.opt.hlsearch = false -- Do not highlight search matches
 vim.opt.scrolloff = 8 -- Minimal number of screen lines to keep above and below the cursor
 vim.opt.swapfile = false -- Do not use swapfiles
