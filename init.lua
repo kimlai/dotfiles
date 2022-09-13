@@ -137,8 +137,12 @@ require('telescope').setup({
         ["<C-j>"] = "move_selection_next",
       },
       n = {
-        ["kj"] = "close"
+        ["<C-c>"] = "close"
       },
+    },
+    layout_strategy = 'vertical',
+    layout_config = {
+      preview_cutoff = 20
     }
   }
 })
