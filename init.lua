@@ -15,6 +15,7 @@ require('packer').startup(function(use)
   use('numToStr/Comment.nvim') -- add/toggle comments
   use({"NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" }}) -- REST client for http files
   use({'ThePrimeagen/harpoon', requires = { 'nvim-lua/plenary.nvim' }}) -- mark files for quick access
+  use('ThePrimeagen/vim-be-good')
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
@@ -77,14 +78,8 @@ vim.api.nvim_create_autocmd({"BufWritePre"}, {
   pattern = "*",
   command = "%s/\\s\\+$//e",
 })
--- Format on save
-vim.api.nvim_create_autocmd('BufWritePre', {
-  group = kimlai,
-  pattern = "*",
-  command = 'lua vim.lsp.buf.formatting_sync()',
-})
 
--- highlight yanked texted
+-- highlight yanked text
 local yank = vim.api.nvim_create_augroup('yank', {})
 vim.api.nvim_create_autocmd('TextYankPost', {
     group = yank,
@@ -101,6 +96,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('Comment').setup()
 require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
 require('lspconfig').tsserver.setup({}) -- javascript LSP support
+require('lspconfig').cssls.setup({})
+require'lspconfig'.elmls.setup({})
 require('nvim-treesitter.configs').setup({ highlight = { enable = true } }) -- better syntax highlighting
 require('rest-nvim').setup()
 require('nvim-surround').setup()
@@ -116,6 +113,7 @@ vim.keymap.set('n', '<leader>fR', '<cmd>Telescope lsp_references<cr>')
 vim.keymap.set('n', '<leader>fi', '<cmd>Telescope lsp_implementations<cr>')
 vim.keymap.set('n', '<leader>fd', '<cmd>Telescope lsp_definitions<cr>')
 vim.keymap.set('n', '<leader>fc', '<cmd>Telescope commands<cr>')
+vim.keymap.set('n', '<leader>dd', '<cmd>Telescope diagnostics<CR>')
 require('telescope').setup({
   defaults = {
     path_display = function(opts, path)
@@ -147,8 +145,20 @@ require('telescope').setup({
   }
 })
 
+-- LSP configuration
+vim.diagnostic.config({
+  virtual_text = false,
+})
+
 -- LSP mappings
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
+
+-- Show all diagnostics on current line in floating window
+vim.api.nvim_set_keymap( 'n', '<Leader>do', ':lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+-- Go to next diagnostic (if there are multiple on the same line, only shows one at a time in the floating window)
+vim.api.nvim_set_keymap( 'n', '<Leader>n', ':lua vim.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
+-- Go to prev diagnostic (if there are multiple on the same line, only shows one at a time in the floating window)
+vim.api.nvim_set_keymap( 'n', '<Leader>p', ':lua vim.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })
 
 ------------------------------
 -- Scala support using metals
@@ -209,6 +219,8 @@ vim.cmd[[highlight User1 guibg=#6272A4]]
 
 vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
+vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+vim.keymap.set('n', '<leader>=', '<cmd>lua vim.lsp.buf.formatting()<cr>')
 
 ----------------------------------
 -- autocompletion using nvim-cmp
