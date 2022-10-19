@@ -97,7 +97,14 @@ require('Comment').setup()
 require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
 require('lspconfig').tsserver.setup({}) -- javascript LSP support
 require('lspconfig').cssls.setup({})
-require'lspconfig'.elmls.setup({})
+-- https://github.com/elm-tooling/elm-language-server/issues/503#issuecomment-773922548
+require('lspconfig').elmls.setup({
+  on_attach = function(client)
+    if client.config.flags then
+      client.config.flags.allow_incremental_sync = true
+    end
+  end
+})
 require('nvim-treesitter.configs').setup({ highlight = { enable = true } }) -- better syntax highlighting
 require('rest-nvim').setup()
 require('nvim-surround').setup()
