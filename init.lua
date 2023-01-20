@@ -170,7 +170,8 @@ vim.api.nvim_set_keymap( 'n', '<Leader>p', ':lua vim.diagnostic.goto_prev()<CR>'
 ------------------------------
 -- Scala support using metals
 ------------------------------
-vim.opt_global.shortmess:remove("F"):append("c")
+vim.opt_global.shortmess:remove("F")
+vim.opt_global.shortmess:append("c")
 
 metals = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
 metals_config = require("metals").bare_config()
