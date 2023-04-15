@@ -5,7 +5,7 @@ require('packer').startup(function(use)
   use({ 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { {'nvim-lua/plenary.nvim'} } })
   use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
   use("romgrk/nvim-treesitter-context") -- show sticky context lines add the top of the buffer
-  use({'dracula/vim', as = 'dracula'}) -- vim theme
+  use('folke/tokyonight.nvim') -- nvim theme
   use('farmergreg/vim-lastplace') -- restore last position when opening a buffer
   use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
   use('neovim/nvim-lspconfig') -- default configuration for most LSP servers
@@ -31,9 +31,7 @@ require('packer').startup(function(use)
 end)
 
 -- theme configuration
-vim.opt.termguicolors = true
-vim.g.dracula_colorterm = false
-vim.cmd[[colorscheme dracula]]
+vim.cmd[[colorscheme tokyonight]]
 
 -- use 2 spaces for tabs
 vim.opt.tabstop = 2 -- Number of spaces that a <Tab> in the file counts for
@@ -257,9 +255,9 @@ end
 
 vim.opt.statusline = "%!luaeval('status_line()')"
 -- those colors are hardcoded from the Dracula theme
-vim.cmd[[highlight StatusLine guibg=#282A36 guifg=#6272A4]]
-vim.cmd[[highlight StatusLineNC guibg=#282A36 guifg=#6272A4]]
-vim.cmd[[highlight User1 guibg=#6272A4]]
+-- vim.cmd[[highlight StatusLine guibg=#282A36 guifg=#6272A4]]
+-- vim.cmd[[highlight StatusLineNC guibg=#282A36 guifg=#6272A4]]
+-- vim.cmd[[highlight User1 guibg=#6272A4]]
 
 vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
@@ -309,4 +307,4 @@ vim.keymap.set('n', '<leader>&', function() require("harpoon.ui").nav_file(1) en
 vim.keymap.set('n', '<leader>é', function() require("harpoon.ui").nav_file(2) end)
 vim.keymap.set('n', '<leader>"', function() require("harpoon.ui").nav_file(3) end)
 vim.keymap.set('n', "<leader>'", function() require("harpoon.ui").nav_file(4) end)
-vim.keymap.set("n", '<leader>(', function() require("harpoon.ui").nav_file(4) end)
+vim.keymap.set("n", '<leader>(', function() require("harpoon.ui").nav_file(5) end)
