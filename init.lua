@@ -31,6 +31,11 @@ require('packer').startup(function(use)
 end)
 
 -- theme configuration
+require("tokyonight").setup({
+  on_highlights = function(hl, c)
+    hl.User1 = { bg = c.bg_visual }
+  end
+})
 vim.cmd[[colorscheme tokyonight]]
 
 -- use 2 spaces for tabs
@@ -184,6 +189,7 @@ vim.keymap.set("n", "<leader>dl", function() require("dap").run_last() end)
 ------------------------------
 metals_config = require("metals").bare_config()
 metals_config.init_options.statusBarProvider = "on"
+metals_config.enableSemanticHighlighting = true
 local dap = require("dap")
 dap.configurations.scala = {
   {
@@ -257,7 +263,7 @@ vim.opt.statusline = "%!luaeval('status_line()')"
 -- those colors are hardcoded from the Dracula theme
 -- vim.cmd[[highlight StatusLine guibg=#282A36 guifg=#6272A4]]
 -- vim.cmd[[highlight StatusLineNC guibg=#282A36 guifg=#6272A4]]
--- vim.cmd[[highlight User1 guibg=#6272A4]]
+-- vim.cmd[[highlight User1 guibg=#6272A4]] -- fugitive colors
 
 vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
