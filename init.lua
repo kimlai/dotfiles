@@ -16,6 +16,8 @@ require('packer').startup(function(use)
   use({"NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" }}) -- REST client for http files
   use({'ThePrimeagen/harpoon', requires = { 'nvim-lua/plenary.nvim' }}) -- mark files for quick access
   use('ThePrimeagen/vim-be-good')
+  use('kevinhwang91/nvim-bqf') -- better quickfix window
+  use('mfussenegger/nvim-dap') -- Debug Adapter Protocol implementation
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
@@ -159,7 +161,10 @@ vim.diagnostic.config({
 
 -- LSP mappings
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
+vim.keymap.set('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<cr>')
 
+-- Show all diagnostics on current line in floating window
+vim.api.nvim_set_keymap( 'n', '<Leader>aa', ':lua vim.diagnostic.setqflist()<CR>', { noremap = true, silent = true })
 -- Show all diagnostics on current line in floating window
 vim.api.nvim_set_keymap( 'n', '<Leader>do', ':lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
 -- Go to next diagnostic (if there are multiple on the same line, only shows one at a time in the floating window)
@@ -167,19 +172,50 @@ vim.api.nvim_set_keymap( 'n', '<Leader>n', ':lua vim.diagnostic.goto_next()<CR>'
 -- Go to prev diagnostic (if there are multiple on the same line, only shows one at a time in the floating window)
 vim.api.nvim_set_keymap( 'n', '<Leader>p', ':lua vim.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })
 
+-- Debugging (using nvim-dap) mappings
+vim.keymap.set("n", "<leader>dc", function() require("dap").continue() end)
+vim.keymap.set("n", "<leader>dr", function() require("dap").repl.toggle() end)
+vim.keymap.set("n", "<leader>dK", function() require("dap.ui.widgets").hover() end)
+vim.keymap.set("n", "<leader>dt", function() require("dap").toggle_breakpoint() end)
+vim.keymap.set("n", "<leader>dso", function() require("dap").step_over() end)
+vim.keymap.set("n", "<leader>dsi", function() require("dap").step_into() end)
+vim.keymap.set("n", "<leader>dl", function() require("dap").run_last() end)
+
 ------------------------------
 -- Scala support using metals
 ------------------------------
-vim.opt_global.shortmess:remove("F")
-vim.opt_global.shortmess:append("c")
-
-metals = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
 metals_config = require("metals").bare_config()
 metals_config.init_options.statusBarProvider = "on"
+local dap = require("dap")
+dap.configurations.scala = {
+  {
+    type = "scala",
+    request = "launch",
+    name = "RunOrTest",
+    metals = {
+      runType = "runOrTestFile",
+      --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
+    },
+  },
+  {
+    type = "scala",
+    request = "launch",
+    name = "Test Target",
+    metals = {
+      runType = "testTarget",
+    },
+  },
+}
+metals_config.on_attach = function(client, bufnr)
+  require("metals").setup_dap()
+end
+
+metals = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "scala", "sbt", "java" },
   callback = function()
-    require("metals").initialize_or_attach({ metals_config })
+    require("metals").initialize_or_attach(metals_config)
+    require("metals").setup_dap()
   end,
   group = metals,
 })
@@ -228,7 +264,7 @@ vim.cmd[[highlight User1 guibg=#6272A4]]
 vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
 vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
-vim.keymap.set('n', '<leader>=', '<cmd>lua vim.lsp.buf.formatting()<cr>')
+vim.keymap.set('n', '<leader>=', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>')
 
 ----------------------------------
 -- autocompletion using nvim-cmp
@@ -260,7 +296,8 @@ cmp.setup({
   }
 })
 
-vim.keymap.set('n', '<leader>rh', '<Plug>RestNvim')
+vim.keymap.set('n', '<leader>hr', '<Plug>RestNvim')
+vim.keymap.set('n', '<leader>hl', '<Plug>RestNvimLast')
 
 ----------------------------------
 -- Harpoon key bindings
