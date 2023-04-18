@@ -19,11 +19,11 @@ def get_current_session():
         with open(f"{expanduser('~')}/.kitty-sessions.json") as f:
             session_name = json.loads(f.read())[str(session_id)]
     except:
-        session_name = "toto"
+        session_name = session_id
     return f" {session_name} "
 
 
-def draw_session_name(screen: Screen, index: int) -> int:
+def draw_session_name(draw_data: DrawData, screen: Screen, index: int) -> int:
     if index != 1:
         return screen.cursor.x
 
@@ -42,8 +42,10 @@ def draw_session_name(screen: Screen, index: int) -> int:
         as_rgb(color_as_int(opts.color2))
     )
     screen.draw(session)
+    screen.cursor.bg = as_rgb(color_as_int(draw_data.default_bg))
+    screen.draw(' ')
     # set cursor position
-    screen.cursor.x = len(session)
+    screen.cursor.x = len(session) + 1
     # restore color style
     screen.cursor.fg, screen.cursor.bg, screen.cursor.bold, screen.cursor.italic = (
         fg,
@@ -82,7 +84,7 @@ def draw_tab(
     extra_data: ExtraData,
 ) -> int:
     global timer_id
-    draw_session_name(screen, index)
+    draw_session_name(draw_data, screen, index)
 
     # Set cursor to where `left_status` ends, instead `right_status`,
     # to enable `open new tab` feature
