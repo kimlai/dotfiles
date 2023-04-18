@@ -308,6 +308,12 @@ cmp.setup({
 vim.keymap.set('n', '<leader>hr', '<Plug>RestNvim')
 vim.keymap.set('n', '<leader>hl', '<Plug>RestNvimLast')
 
+---------------------------------
+-- Fugitive key bindings
+----------------------------------
+vim.keymap.set('n', 'gf', '<cmd>diffget //2<cr>') -- get left
+vim.keymap.set('n', 'gh', '<cmd>diffget //3<cr>') -- get right
+
 ----------------------------------
 -- Harpoon key bindings
 ----------------------------------
