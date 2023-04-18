@@ -267,7 +267,7 @@ end
 vim.opt.statusline = "%!luaeval('status_line()')"
 -- those colors are hardcoded from the Dracula theme
 vim.cmd[[highlight! link StatusLine DraculaComment]]
-vim.cmd[[highlight! link StatusLineNC DraculaComment]]
+vim.cmd[[highlight! link StatusLineNC DraculaSubtle]]
 vim.cmd[[highlight User1 guibg=#6272A4]] -- fugitive colors
 
 vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
