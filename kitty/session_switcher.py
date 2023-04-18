@@ -7,6 +7,7 @@ from typing import List, Dict, Any
 from kitty.boss import Boss
 from kitty.remote_control import create_basic_command, encode_send
 from kitty.typing import KeyEventType
+from kitty.key_encoding import RELEASE
 from kittens.tui.handler import Handler
 from kittens.tui.loop import Loop
 from kittens.tui.operations import styled, repeat
@@ -63,7 +64,10 @@ class SessionSwitcher(Handler):
             self.draw_screen()
 
 
-    def on_key(self, key_event: KeyEventType) -> None:
+    def on_key_event(self, key_event: KeyEventType, in_bracketed_paste: bool = False) -> None:
+        if key_event.type == RELEASE:
+            return
+
         if key_event.matches('esc'):
             self.quit_loop(0)
 
