@@ -170,6 +170,9 @@ vim.diagnostic.config({
 -- LSP mappings
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
 vim.keymap.set('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<cr>')
+vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+vim.keymap.set('n', '<leader>=', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>')
 
 -- Show all diagnostics on current line in floating window
 vim.api.nvim_set_keymap( 'n', '<Leader>aa', ':lua vim.diagnostic.setqflist()<CR>', { noremap = true, silent = true })
@@ -270,11 +273,6 @@ vim.cmd[[highlight! link StatusLine DraculaComment]]
 vim.cmd[[highlight! link StatusLineNC DraculaSubtle]]
 vim.cmd[[highlight User1 guibg=#6272A4]] -- fugitive colors
 
-vim.keymap.set('n', '<leader>fd', '<cmd>lua vim.lsp.buf.definition()<cr>')
-vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
-vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
-vim.keymap.set('n', '<leader>=', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>')
-
 ----------------------------------
 -- autocompletion using nvim-cmp
 ----------------------------------
@@ -311,6 +309,7 @@ vim.keymap.set('n', '<leader>hl', '<Plug>RestNvimLast')
 ---------------------------------
 -- Fugitive key bindings
 ----------------------------------
+vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', 'gf', '<cmd>diffget //2<cr>') -- get left
 vim.keymap.set('n', 'gh', '<cmd>diffget //3<cr>') -- get right
 
