@@ -81,6 +81,10 @@ vim.keymap.set('n', '<C-ù>', '<C-]>')
 vim.keymap.set('n', '<C-h>', ':bp<CR>')
 vim.keymap.set('n', '<C-l>', ':bn<CR>')
 
+-- yank text to system clipboard
+vim.keymap.set({'n', 'v'}, '<leader>y', [["+y]])
+vim.keymap.set('n', '<leader>Y', [["+Y]])
+
 local kimlai = vim.api.nvim_create_augroup('kimlai', {})
 -- Remove trailing spaces on save
 vim.api.nvim_create_autocmd({"BufWritePre"}, {
