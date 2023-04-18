@@ -96,6 +96,12 @@ class SessionSwitcher(Handler):
             else:
                 print(session_name)
 
+        # don't draw anything if we have nothing to show, otherwise we can see the borders for
+        # a couple of ms. this is an approximation since we might get some text data for another
+        # window than the one we're showing, but it seems to do the job.
+        if not self.windows_text:
+            return
+
         tabs = list(islice(self.os_windows[self.selected_session_idx]['tabs'], 0, 4))
         border_count = len(tabs) + 1
         tab_width = math.floor((self.screen_size.cols - border_count)/len(tabs))
