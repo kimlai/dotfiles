@@ -97,20 +97,20 @@ class SessionSwitcher(Handler):
                 print(session_name)
 
         tabs = list(islice(self.os_windows[self.selected_session_idx]['tabs'], 0, 4))
-        padding = 4
-        padding_left = repeat(' ', math.floor(padding / 2))
         border_count = len(tabs) + 1
-        tab_width = math.floor((self.screen_size.cols - padding - border_count)/len(tabs))
-        tab_height = math.floor(self.screen_size.rows / 2)
+        tab_width = math.floor((self.screen_size.cols - border_count)/len(tabs))
+        tab_height = math.floor(self.screen_size.rows / 2 - 2)
 
-        for _ in range(self.screen_size.rows - len(self.os_windows) - tab_height - 4):
+        for _ in range(self.screen_size.rows - len(self.os_windows) - tab_height -2 - 1): # 2 for borders, 1 for the tab_bar
             print('')
 
-        border = ''
-        for tab in tabs:
-            border += '+' + repeat('-', tab_width + 1)
-        print(padding_left + border + '+')
+        def print_horizontal_border():
+            border = ''
+            for tab in tabs:
+                border += '+' + repeat('-', tab_width)
+            print(border + '+')
 
+        print_horizontal_border()
 
         # messy code for tab preview diplay
         lines_by_tab = []
@@ -119,16 +119,13 @@ class SessionSwitcher(Handler):
             w = tab['windows'][0]
             lines = self.windows_text.get(w['id'], '').split('\n')
             for line in islice(lines, 0, tab_height):
-                new_line.append(line[:tab_width - 2].ljust(tab_width - 1))
+                new_line.append(line[:tab_width - 2].ljust(tab_width - 2))
             lines_by_tab.append(new_line)
 
         for line in zip(*lines_by_tab):
-            print(padding_left + '| ' + ' | '.join(line) + ' |')
+            print('| ' + ' | '.join(line) + ' |')
 
-        border = ''
-        for tab in tabs:
-            border += '+' + repeat('-', tab_width + 1)
-        print(padding_left + border + '+')
+        print_horizontal_border()
 
 
 def main(args: List[str]) -> str:
