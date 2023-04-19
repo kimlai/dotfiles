@@ -19,6 +19,7 @@ require('packer').startup(function(use)
   use('ThePrimeagen/vim-be-good')
   use('kevinhwang91/nvim-bqf') -- better quickfix window
   use('mfussenegger/nvim-dap') -- Debug Adapter Protocol implementation
+  use('mbbill/undotree') -- The undo history visualizer for VIM
 
   -- autocompletion
   use('hrsh7th/nvim-cmp')
