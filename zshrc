@@ -18,4 +18,6 @@ else
 fi
 
 # Allow local modifications in ~/.zshrc.local
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+if [[ -f ~/.zshrc.local ]]; then
+  source ~/.zshrc.local
+fi

@@ -315,6 +315,7 @@ vim.keymap.set('n', '<leader>hl', '<Plug>RestNvimLast')
 -- Fugitive key bindings
 ----------------------------------
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
+vim.keymap.set('n', '<leader>gp', function() vim.cmd.Git('push') end)
 vim.keymap.set('n', 'gf', '<cmd>diffget //2<cr>') -- get left
 vim.keymap.set('n', 'gh', '<cmd>diffget //3<cr>') -- get right
 
