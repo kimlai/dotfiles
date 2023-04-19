@@ -8,6 +8,7 @@ from typing import List, Dict, Any
 from kitty.boss import Boss
 from kitty.remote_control import create_basic_command, encode_send
 from kitty.typing import KeyEventType
+from kitty.fast_data_types import current_focused_os_window_id
 from kitty.key_encoding import RELEASE
 from kittens.tui.handler import Handler
 from kittens.tui.loop import Loop
@@ -96,6 +97,8 @@ class SessionSwitcher(Handler):
         for i, os_window in enumerate(self.os_windows):
             wid = os_window['id']
             session_name = f' {self.session_names.get(str(wid), wid)} '
+            if os_window['is_active']:
+                session_name = f'➜{session_name}'
             if i == self.selected_session_idx:
                 print(styled(session_name, bg='green', fg='black'))
             else:
@@ -115,28 +118,42 @@ class SessionSwitcher(Handler):
         for _ in range(self.screen_size.rows - len(self.os_windows) - tab_height -2 - 1): # 2 for borders, 1 for the tab_bar
             print('')
 
-        def print_horizontal_border():
-            border = ''
-            for tab in tabs:
-                border += '+' + repeat('-', tab_width)
-            print(border + '+')
+        def print_horizontal_border(left_corner: str, middle_corner: str, right_corner: str):
+            border = left_corner
+            for i, tab in enumerate(tabs):
+                # the last tab can be 1 col larger to truly be full-width
+                if i == len(tabs) - 1 and len(tabs) % 2 == self.screen_size.cols % 2:
+                    width = tab_width + 1
+                else:
+                    width = tab_width
+                border += repeat('─', width)
+                if (i < len(tabs) - 1):
+                    border += middle_corner
+                else:
+                    border += right_corner
+            print(border)
 
-        print_horizontal_border()
+        print_horizontal_border('┌', '┬', '┐')
 
-        # messy code for tab preview diplay
+        # messy code for tab preview display
         lines_by_tab = []
-        for tab in tabs:
+        for i, tab in enumerate(tabs):
             new_line = []
             w = tab['windows'][0]
             lines = self.windows_text.get(w['id'], '')
+            # the last tab can be 1 col larger to truly be full-width
+            if i == len(tabs) - 1 and len(tabs) % 2 == self.screen_size.cols % 2:
+                width = tab_width + 1
+            else:
+                width = tab_width
             for line in islice(lines, 0, tab_height):
-                new_line.append(line.slice(tab_width - 2).ljust(tab_width - 2))
+                new_line.append(line.slice(width - 2).ljust(width - 2))
             lines_by_tab.append(new_line)
 
         for line in zip(*lines_by_tab):
-            print('| ' + '\x1b[0m | '.join([l.get_raw_text() for l in line]) + ' \x1b[0m|')
+            print('│ ' + '\x1b[0m │ '.join([l.get_raw_text() for l in line]) + ' \x1b[0m│')
 
-        print_horizontal_border()
+        print_horizontal_border('└', '┴', '┘')
 
 
 # Ansi escaping mostly stolen from
