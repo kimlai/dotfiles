@@ -1,5 +1,6 @@
 import json
 import math
+import re
 
 from os.path import expanduser
 from itertools import islice
@@ -47,7 +48,7 @@ class SessionSwitcher(Handler):
                 for tab in os_window['tabs']:
                     for w in tab['windows']:
                         wid = w['id']
-                        get_text = create_basic_command('get-text', {'match': f'id:{wid}'}, no_response = False)
+                        get_text = create_basic_command('get-text', {'match': f'id:{wid}', 'ansi': True}, no_response = False)
                         self.write(encode_send(get_text))
                         self.cmds.insert(0, {
                             'type': 'get-text',
@@ -59,8 +60,8 @@ class SessionSwitcher(Handler):
             self.draw_screen()
 
         if cmd['type'] == 'get-text':
-            text = response['data']
-            self.windows_text[cmd['window_id']] = text
+            lines = [Ansi(f'{line}') for line in response['data'].split('\n')]
+            self.windows_text[cmd['window_id']] = lines
             self.draw_screen()
 
 
@@ -127,15 +128,85 @@ class SessionSwitcher(Handler):
         for tab in tabs:
             new_line = []
             w = tab['windows'][0]
-            lines = self.windows_text.get(w['id'], '').split('\n')
+            lines = self.windows_text.get(w['id'], '')
             for line in islice(lines, 0, tab_height):
-                new_line.append(line[:tab_width - 2].ljust(tab_width - 2))
+                new_line.append(line.slice(tab_width - 2).ljust(tab_width - 2))
             lines_by_tab.append(new_line)
 
         for line in zip(*lines_by_tab):
-            print('| ' + ' | '.join(line) + ' |')
+            print('| ' + '\x1b[0m | '.join([l.get_raw_text() for l in line]) + ' \x1b[0m|')
 
         print_horizontal_border()
+
+
+# Ansi escaping mostly stolen from
+# https://github.com/getcuia/stransi/blob/main/src/stransi/
+
+PATTERN = re.compile(r"(\N{ESC}\[[\d;|:]*[a-zA-Z]|\N{ESC}\]133;[A-Z]\N{ESC}\\)")
+                       # ansi--^     shell prompt OSC 133--^
+
+class Ansi:
+    def __init__(self, text):
+        self.raw_text = text
+        self.parsed = list(parse_ansi_colors(self.raw_text))
+
+    def __str__(self):
+        return f'Ansi({[str(c) for c in self.parsed]}, {self.raw_text})'
+
+    def get_raw_text(self):
+        return self.raw_text
+
+    def slice(self, n):
+        chars = 0
+        text = ''
+        for token in self.parsed:
+            if isinstance(token, EscapeSequence):
+                text += token.get_sequence()
+            else:
+                sliced = token[:n - chars]
+                text += sliced
+                chars += len(sliced)
+        return Ansi(text)
+
+    def ljust(self, n):
+        chars = 0
+        text = ''
+        for token in self.parsed:
+            if isinstance(token, EscapeSequence):
+                text += token.get_sequence()
+            else:
+                text += token
+                chars += len(token)
+        for i in range(0, n - chars):
+            text += ' '
+        return Ansi(text)
+
+
+class EscapeSequence:
+    def __init__(self, sequence: str):
+        self.sequence = sequence
+
+    def __str__(self):
+        return f'EscapeSequence({self.sequence})'
+
+    def get_sequence(self):
+        return self.sequence
+
+
+def parse_ansi_colors(text: str):
+    prev_end = 0
+    for match in re.finditer(PATTERN, text):
+        # Yield the text before escape sequence.
+        yield text[prev_end : match.start()]
+
+        if escape_sequence := match.group(0):
+            yield EscapeSequence(escape_sequence)
+
+        # Update the start position.
+        prev_end = match.end()
+
+    # Yield the text after the last escape sequence.
+    yield text[prev_end:]
 
 
 def main(args: List[str]) -> str:
