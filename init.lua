@@ -1,7 +1,6 @@
 require('packer').startup(function(use)
   use("wbthomason/packer.nvim")
 
-  use('psliwka/vim-smoothie') -- smooth scrolling when using <C-d> and <C-u>
   use({ 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { {'nvim-lua/plenary.nvim'} } })
   use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
   use("romgrk/nvim-treesitter-context") -- show sticky context lines add the top of the buffer
@@ -65,6 +64,10 @@ vim.opt.scrolloff = 8 -- Minimal number of screen lines to keep above and below 
 vim.opt.swapfile = false -- Do not use swapfiles
 vim.opt.updatetime = 100 -- update gitgutter info every 100ms
 
+-----------------
+-- Mappings
+-----------------
+
 vim.g.mapleader = " "
 
 vim.keymap.set('i', 'kj', '<ESC>') -- When in insert mode, type kj instead of <ESC> to go back to normal mode
@@ -85,6 +88,12 @@ vim.keymap.set('n', '<C-l>', ':bn<CR>')
 -- yank text to system clipboard
 vim.keymap.set({'n', 'v'}, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
+
+-- put the cursor at the center of the screen when moving around
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
 
 local kimlai = vim.api.nvim_create_augroup('kimlai', {})
 -- Remove trailing spaces on save
