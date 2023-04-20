@@ -136,19 +136,19 @@ function prompt_sorin_setup {
 
   # Set git-info parameters.
   zstyle ':prezto:module:git:info' verbose 'yes'
-  zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
-  zstyle ':prezto:module:git:info:added' format ' %%B%F{0}✚%f%%b'
-  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{0}⬆%f%%b'
-  zstyle ':prezto:module:git:info:behind' format ' %%B%F{0}⬇%f%%b'
-  zstyle ':prezto:module:git:info:branch' format ' %%B%b%f%%b'
-  zstyle ':prezto:module:git:info:commit' format ' %%B%F{0}%.7c%f%%b'
-  zstyle ':prezto:module:git:info:deleted' format ' %%B%F{0}✖%f%%b'
-  zstyle ':prezto:module:git:info:modified' format ' %%B%F{0}!%f%%b'
-  zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
-  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{0}➜%f%%b'
-  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{0}%f%%b'
-  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{0}═%f%%b'
-  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{0}?%f%%b'
+  zstyle ':prezto:module:git:info:action' format '%F{0}:%f%%B%F{0}%s%f%%b'
+  zstyle ':prezto:module:git:info:added' format ' %%B%F{0}✚ %a%f%%b'    # ✚
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{0}⬆ %A%f%%b'      # ⬆
+  zstyle ':prezto:module:git:info:behind' format ' %%B%F{0}⬇ %B%f%%b'     # ⬇
+  zstyle ':prezto:module:git:info:branch' format ' %%B%b%f%%b'         # branch name
+  zstyle ':prezto:module:git:info:commit' format ' %%B%F{0}%.7c%f%%b'  # commit sha1
+  zstyle ':prezto:module:git:info:deleted' format ' %%B%F{0}✖-%d%f%%b' # ✖-
+  zstyle ':prezto:module:git:info:modified' format ' %%B%F{0}!%m%f%%b' # !
+  zstyle ':prezto:module:git:info:position' format ' %%B%F{0}%p%f%%b'
+  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{0}➜ %r%f%%b'  # ➜
+  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{0} %S%f%%b'    # 
+  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{0}✖ %U%f%%b'   # ✖
+  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{0}?%u%f%%b'  # ?
   zstyle ':prezto:module:git:info:keys' format \
     'status' '%b %p %c:%s%A%B%S%a%d%m%r%U%u'
 
