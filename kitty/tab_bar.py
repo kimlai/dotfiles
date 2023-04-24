@@ -6,6 +6,7 @@ import json
 
 from os.path import expanduser
 
+from kitty.boss import get_boss
 from kitty.fast_data_types import Screen, get_options, add_timer, current_focused_os_window_id
 from kitty.tab_bar import (DrawData, ExtraData, TabBarData, as_rgb,
                            draw_tab_with_fade, draw_title)
@@ -19,7 +20,9 @@ def get_current_session():
         with open(f"{expanduser('~')}/.kitty-sessions.json") as f:
             session_name = json.loads(f.read())[str(session_id)]
     except:
-        session_name = session_id
+        for idx, window in enumerate(get_boss().list_os_windows()):
+            if window['id'] == session_id:
+                session_name = idx
     return f" {session_name} "
 
 

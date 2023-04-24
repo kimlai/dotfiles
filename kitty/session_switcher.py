@@ -96,7 +96,7 @@ class SessionSwitcher(Handler):
             return
         for i, os_window in enumerate(self.os_windows):
             wid = os_window['id']
-            session_name = f' {self.session_names.get(str(wid), wid)} '
+            session_name = f' {self.session_names.get(str(wid), i)} '
             if os_window['is_active']:
                 session_name = f'➜{session_name}'
             if i == self.selected_session_idx:
