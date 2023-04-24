@@ -1,0 +1,3 @@
+launch sh -c "echo '{}' > $HOME/.kitty-sessions.json"
+new_os_window
+focus_os_window
