@@ -61,7 +61,8 @@ class SessionSwitcher(Handler):
             self.draw_screen()
 
         if cmd['type'] == 'get-text':
-            lines = [Ansi(f'{line}') for line in response['data'].split('\n')]
+            # replace tabs with two spaces because having a character that spans multiple columns messes up computations
+            lines = [Ansi(f'{line}') for line in response['data'].replace('\t', '  ').split('\n')]
             self.windows_text[cmd['window_id']] = lines
             self.draw_screen()
 
