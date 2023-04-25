@@ -143,7 +143,7 @@ vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>')
 vim.keymap.set('n', '<leader>fR', '<cmd>Telescope lsp_references<cr>')
 vim.keymap.set('n', '<leader>fi', '<cmd>Telescope lsp_implementations<cr>')
 vim.keymap.set('n', '<leader>fd', '<cmd>Telescope lsp_definitions<cr>')
-vim.keymap.set('n', '<leader>fc', '<cmd>Telescope commands<cr>')
+vim.keymap.set('n', '<leader>cc', '<cmd>Telescope commands<cr>')
 vim.keymap.set('n', '<leader>dd', '<cmd>Telescope diagnostics<CR>')
 require('telescope').setup({
   defaults = {
@@ -282,10 +282,12 @@ function status_line()
 end
 
 vim.opt.statusline = "%!luaeval('status_line()')"
--- those colors are hardcoded from the Dracula theme
 vim.cmd[[highlight! link StatusLine DraculaComment]]
 vim.cmd[[highlight! link StatusLineNC DraculaSubtle]]
-vim.cmd[[highlight User1 guibg=#6272A4]] -- fugitive colors
+-- color hardcoded from the Dracula theme
+vim.cmd[[highlight User1 guibg=#6272A4]] -- fugitive status colors
+vim.cmd[[highlight link LspCodeLens DraculaComment]]
+vim.cmd[[highlight link LspCodeLensSeparator DraculaComment]]
 
 ----------------------------------
 -- autocompletion using nvim-cmp
