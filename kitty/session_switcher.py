@@ -111,8 +111,6 @@ class SessionSwitcher(Handler):
             return
 
         tabs = list(islice(self.os_windows[self.selected_session_idx]['tabs'], 0, 4))
-        border_count = len(tabs) + 1
-        tab_width = math.floor((self.screen_size.cols - border_count)/len(tabs))
         tab_height = math.floor(self.screen_size.rows / 2 - 2)
 
         for _ in range(self.screen_size.rows - len(self.os_windows) - tab_height -2 - 1): # 2 for borders, 1 for the tab_bar
@@ -120,14 +118,10 @@ class SessionSwitcher(Handler):
 
         def print_horizontal_border(left_corner: str, middle_corner: str, right_corner: str):
             border = left_corner
-            for i, tab in enumerate(tabs):
-                # the last tab can be 1 col larger to truly be full-width
-                if i == len(tabs) - 1 and len(tabs) % 2 == self.screen_size.cols % 2:
-                    width = tab_width + 1
-                else:
-                    width = tab_width
+            for idx, tab in enumerate(tabs):
+                width = tab_width(self.screen_size.cols, len(tabs), idx)
                 border += repeat('─', width)
-                if (i < len(tabs) - 1):
+                if (idx < len(tabs) - 1):
                     border += middle_corner
                 else:
                     border += right_corner
@@ -137,15 +131,11 @@ class SessionSwitcher(Handler):
 
         # messy code for tab preview display
         lines_by_tab = []
-        for i, tab in enumerate(tabs):
+        for idx, tab in enumerate(tabs):
             new_line = []
             w = tab['windows'][0]
             lines = self.windows_text.get(w['id'], '')
-            # the last tab can be 1 col larger to truly be full-width
-            if i == len(tabs) - 1 and len(tabs) % 2 == self.screen_size.cols % 2:
-                width = tab_width + 1
-            else:
-                width = tab_width
+            width = tab_width(self.screen_size.cols, len(tabs), idx)
             for line in islice(lines, 0, tab_height):
                 new_line.append(line.slice(width - 2).ljust(width - 2))
             lines_by_tab.append(new_line)
@@ -224,6 +214,17 @@ def parse_ansi_colors(text: str):
 
     # Yield the text after the last escape sequence.
     yield text[prev_end:]
+
+# the last tab must sometimes be padded by 1 column so that the preview fits the whole width
+def tab_width(cols, tab_count, idx):
+    border_count = tab_count + 1
+    tab_width = math.floor((cols - border_count)/tab_count)
+    if tab_count == 1:
+        return tab_width
+    if idx == tab_count - 1 and tab_count % 2 == cols % 2:
+        return tab_width + 1
+    else:
+        return tab_width
 
 
 def main(args: List[str]) -> str:
