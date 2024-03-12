@@ -127,6 +127,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
+-- Syntax Highlighting for Nunjuck files
+vim.cmd [[ autocmd BufRead,BufNewFile *.njk setfiletype html ]]
+
 -- Misc plugins setup
 require('Comment').setup()
 require('treesitter-context').setup({ max_lines = 3 }) -- unlimited context lines
