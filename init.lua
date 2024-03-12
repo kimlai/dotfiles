@@ -5,15 +5,16 @@ require('packer').startup(function(use)
   use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
   use("romgrk/nvim-treesitter-context") -- show sticky context lines add the top of the buffer
 --  use('folke/tokyonight.nvim') -- nvim theme
+  use({ "catppuccin/nvim", as = "catppuccin" })
   use({'dracula/vim', as = 'dracula'}) -- vim theme
   use('farmergreg/vim-lastplace') -- restore last position when opening a buffer
   use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
   use('neovim/nvim-lspconfig') -- default configuration for most LSP servers
   use('kylechui/nvim-surround') -- adds some motions to work with parenthesis, quotes, brackets etc.
   use('tpope/vim-fugitive') -- git wrapper to use git from within vim
-  use('airblade/vim-gitgutter') -- show git diff information in the sign column
+  use('lewis6991/gitsigns.nvim') -- show git diff information in the sign column
   use('numToStr/Comment.nvim') -- add/toggle comments
-  use({"NTBBloodbath/rest.nvim", requires = { "nvim-lua/plenary.nvim" }}) -- REST client for http files
+  use({"rest-nvim/rest.nvim", requires = { "nvim-lua/plenary.nvim" }}) -- REST client for http files
   use({'ThePrimeagen/harpoon', requires = { 'nvim-lua/plenary.nvim' }}) -- mark files for quick access
   use('ThePrimeagen/vim-be-good')
   use('kevinhwang91/nvim-bqf') -- better quickfix window
@@ -39,6 +40,16 @@ end)
 --   end
 -- })
 -- vim.cmd[[colorscheme tokyonight]]
+
+-- require("catppuccin").setup({
+--   flavour = "mocha", -- latte, frappe, macchiato, mocha
+--   transparent_background = true,
+--   integrations = {
+--     gitgutter = true
+--   }
+-- })
+-- vim.cmd.colorscheme("catppuccin")
+
 vim.opt.termguicolors = true
 vim.g.dracula_colorterm = false
 vim.cmd[[colorscheme dracula]]
@@ -62,7 +73,7 @@ vim.opt.list = true -- show trailing spaces, tabs and &nbsp
 vim.opt.hlsearch = false -- Do not highlight search matches
 vim.opt.scrolloff = 8 -- Minimal number of screen lines to keep above and below the cursor
 vim.opt.swapfile = false -- Do not use swapfiles
-vim.opt.updatetime = 100 -- update gitgutter info every 100ms
+vim.opt.signcolumn = "yes" -- prevent LSP diagnostics appearing making the whole buffer shift to the right
 
 -----------------
 -- Mappings
@@ -118,9 +129,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Misc plugins setup
 require('Comment').setup()
-require('treesitter-context').setup({ max_lines = -1 }) -- unlimited context lines
+require('treesitter-context').setup({ max_lines = 3 }) -- unlimited context lines
 require('lspconfig').tsserver.setup({}) -- javascript LSP support
 require('lspconfig').cssls.setup({})
+require('gitsigns').setup()
 -- https://github.com/elm-tooling/elm-language-server/issues/503#issuecomment-773922548
 require('lspconfig').elmls.setup({
   on_attach = function(client)
@@ -129,7 +141,10 @@ require('lspconfig').elmls.setup({
     end
   end
 })
-require('nvim-treesitter.configs').setup({ highlight = { enable = true } }) -- better syntax highlighting
+require('nvim-treesitter.configs').setup({
+  highlight = { enable = true }, -- better syntax highlighting
+  ensure_installed = { "http", "json" } -- used by rest.nvim
+})
 require('rest-nvim').setup()
 require('nvim-surround').setup()
 
@@ -164,9 +179,11 @@ require('telescope').setup({
       i = {
         ["<C-k>"] = "move_selection_previous",
         ["<C-j>"] = "move_selection_next",
+        ['<C-d>'] = require('telescope.actions').delete_buffer
       },
       n = {
-        ["<C-c>"] = "close"
+        ["<C-c>"] = "close",
+        ['<C-d>'] = require('telescope.actions').delete_buffer
       },
     },
     layout_strategy = 'vertical',
@@ -211,7 +228,10 @@ vim.keymap.set("n", "<leader>dl", function() require("dap").run_last() end)
 ------------------------------
 metals_config = require("metals").bare_config()
 metals_config.init_options.statusBarProvider = "on"
-metals_config.settings = { testUserInterface = "Test Explorer" }
+metals_config.settings = {
+  testUserInterface = "Test Explorer",
+  enableSemanticHighlighting = false,
+}
 local dap = require("dap")
 dap.configurations.scala = {
   {
@@ -232,6 +252,9 @@ dap.configurations.scala = {
     },
   },
 }
+
+local handle_test_added = function(test)
+end
 
 local handle_test_start = function(session, body)
   -- Clear the test result extmarks.
@@ -271,6 +294,7 @@ local handle_test_result = function(session, body)
       vim.api.nvim_buf_set_extmark(suite_bufnr, namespace, test_linenr, 0, { virt_text = { text } })
     elseif test_result.kind == "skipped" then
       local text = {"skipped"}
+      error(vim.inspect(test_result))
       vim.api.nvim_buf_set_extmark(suite_bufnr, namespace, test_linenr, 0, { virt_text = { text } })
     elseif test_result.kind == "failed" then
       local text = {"⨯", "DiagnosticError"}
@@ -317,6 +341,14 @@ vim.api.nvim_create_autocmd("FileType", {
 local function metals_status()
   return vim.g["metals_status"] or ""
 end
+local function metals_bsp_status()
+  local bsp_status = string.gsub(vim.g["metals_bsp_status"] or "", '%s+', '')
+  if bsp_status ~= "" then
+    return '[' .. bsp_status .. '] '
+  else
+    return ""
+  end
+end
 
 local function fugitive_status()
   local _, _, fugitive_status =  string.find(vim.api.nvim_eval('FugitiveStatusline()'), '%[Git%((.+)%)%]')
@@ -325,6 +357,40 @@ local function fugitive_status()
   else
     return ''
   end
+end
+
+local function lsp_status()
+  local count = {}
+  local levels = {
+    errors = "Error",
+    warnings = "Warn",
+    info = "Info",
+    hints = "Hint",
+  }
+
+  for k, level in pairs(levels) do
+    count[k] = vim.tbl_count(vim.diagnostic.get(0, { severity = level }))
+  end
+
+  local errors = ""
+  local warnings = ""
+  local hints = ""
+  local info = ""
+
+  if count["errors"] ~= 0 then
+    errors = " %#DiagnosticSignError# " .. count["errors"]
+  end
+  if count["warnings"] ~= 0 then
+    warnings = " %#DiagnosticSignWarning " .. count["warnings"]
+  end
+  if count["hints"] ~= 0 then
+    hints = " %#DiagnosticSignHint# " .. count["hints"]
+  end
+  if count["info"] ~= 0 then
+    info = " %#DiagnosticSignInfo#󰋼 " .. count["info"]
+  end
+
+  return errors .. warnings .. hints .. info .. "%#StatusLine#"
 end
 
 function status_line()
@@ -337,9 +403,10 @@ function status_line()
     '%r', -- readonly flag
     metals_status(),
     '%=', -- separator between the left and the right parts
-    '%y ', -- filetype
-    '%l,%c', -- line,column
-    '%V ', -- virtual column
+    lsp_status(),
+    ' %y ', -- filetype
+    metals_bsp_status(),
+    '%l,%-2c ', -- line,column
     '%p%%' -- percentage
   })
 end
