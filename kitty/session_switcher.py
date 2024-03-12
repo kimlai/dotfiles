@@ -5,7 +5,7 @@ import re
 from os.path import expanduser
 from itertools import islice
 from typing import List, Dict, Any
-from kitty.boss import Boss
+from kitty.boss import get_boss
 from kitty.remote_control import create_basic_command, encode_send
 from kitty.typing import KeyEventType
 from kitty.fast_data_types import current_focused_os_window_id
@@ -75,11 +75,7 @@ class SessionSwitcher(Handler):
             self.quit_loop(0)
 
         if key_event.matches('enter'):
-            tab = next(t for t in self.os_windows[self.selected_session_idx]['tabs'] if t['is_active'])
-            window_id = next(w for w in tab['windows'] if w['is_active'])['id']
-            focus_window = create_basic_command('focus_window', {'match': f'id:{window_id}'}, no_response = True)
-            self.write(encode_send(focus_window))
-            self.quit_loop(0)
+            self.switch_to_session()
 
         if key_event.key == 'j':
             self.selected_session_idx = (self.selected_session_idx + 1) % len(self.os_windows)
@@ -88,6 +84,29 @@ class SessionSwitcher(Handler):
         if key_event.key == 'k':
             self.selected_session_idx = (self.selected_session_idx + -1 + len(self.os_windows)) % len(self.os_windows)
             self.draw_screen()
+
+        if key_event.key == '&':
+            self.selected_session_idx = 0
+            self.switch_to_session()
+
+        if key_event.key == 'é':
+            self.selected_session_idx = 1
+            self.switch_to_session()
+
+        if key_event.key == '"':
+            self.selected_session_idx = 2
+            self.switch_to_session()
+
+        if key_event.key == '\'':
+            self.selected_session_idx = 3
+            self.switch_to_session()
+
+    def switch_to_session(self) -> None:
+        tab = next(t for t in self.os_windows[self.selected_session_idx]['tabs'] if t['is_active'])
+        window_id = next(w for w in tab['windows'] if w['is_active'])['id']
+        focus_window = create_basic_command('focus_window', {'match': f'id:{window_id}'}, no_response = True)
+        self.write(encode_send(focus_window))
+        self.quit_loop(0)
 
 
     def draw_screen(self) -> None:
@@ -100,6 +119,8 @@ class SessionSwitcher(Handler):
             session_name = f' {self.session_names.get(str(wid), i)} '
             if os_window['is_active']:
                 session_name = f'➜{session_name}'
+            else:
+                session_name = f' {session_name}'
             if i == self.selected_session_idx:
                 print(styled(session_name, bg='green', fg='black'))
             else:
