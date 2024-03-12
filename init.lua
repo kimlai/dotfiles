@@ -5,7 +5,6 @@ require('packer').startup(function(use)
   use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
   use("romgrk/nvim-treesitter-context") -- show sticky context lines add the top of the buffer
 --  use('folke/tokyonight.nvim') -- nvim theme
-  use({ "catppuccin/nvim", as = "catppuccin" })
   use({'dracula/vim', as = 'dracula'}) -- vim theme
   use('farmergreg/vim-lastplace') -- restore last position when opening a buffer
   use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
@@ -40,15 +39,6 @@ end)
 --   end
 -- })
 -- vim.cmd[[colorscheme tokyonight]]
-
--- require("catppuccin").setup({
---   flavour = "mocha", -- latte, frappe, macchiato, mocha
---   transparent_background = true,
---   integrations = {
---     gitgutter = true
---   }
--- })
--- vim.cmd.colorscheme("catppuccin")
 
 vim.opt.termguicolors = true
 vim.g.dracula_colorterm = false
@@ -144,10 +134,16 @@ require('lspconfig').elmls.setup({
     end
   end
 })
+
 require('nvim-treesitter.configs').setup({
   highlight = { enable = true }, -- better syntax highlighting
   ensure_installed = { "http", "json" } -- used by rest.nvim
 })
+
+require'lspconfig'.elixirls.setup{
+  cmd = { os.getenv('HOME') .. '/.elixir-ls/language_server.sh' };
+}
+require('nvim-treesitter.configs').setup({ highlight = { enable = true } }) -- better syntax highlighting
 require('rest-nvim').setup()
 require('nvim-surround').setup()
 
