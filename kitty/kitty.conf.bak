@@ -2417,6 +2417,6 @@ map ctrl+cmd+e show_kitty_env_vars
 
 
 # BEGIN_KITTY_THEME
-# Everforest Dark Hard
+# Dracula
 include current-theme.conf
 # END_KITTY_THEME

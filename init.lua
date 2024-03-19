@@ -1,11 +1,14 @@
 require('packer').startup(function(use)
   use("wbthomason/packer.nvim")
 
-  use({ 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { {'nvim-lua/plenary.nvim'} } })
+  -- themes
+  use('folke/tokyonight.nvim') -- nvim theme
+  use('sainnhe/everforest') -- vim theme
+  use({'dracula/vim', as = 'dracula'}) -- vim theme
+
+  use({ 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { {'nvim-lua/plenary.nvim'} } })
   use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
   use("romgrk/nvim-treesitter-context") -- show sticky context lines add the top of the buffer
---  use('folke/tokyonight.nvim') -- nvim theme
-  use({'dracula/vim', as = 'dracula'}) -- vim theme
   use('farmergreg/vim-lastplace') -- restore last position when opening a buffer
   use({'scalameta/nvim-metals', requires = { "nvim-lua/plenary.nvim" }})
   use('neovim/nvim-lspconfig') -- default configuration for most LSP servers
@@ -33,6 +36,8 @@ end)
 
 -- theme configuration
 
+vim.opt.termguicolors = true
+
 -- require("tokyonight").setup({
 --   on_highlights = function(hl, c)
 --     hl.User1 = { bg = c.bg_visual }
@@ -40,9 +45,32 @@ end)
 -- })
 -- vim.cmd[[colorscheme tokyonight]]
 
-vim.opt.termguicolors = true
-vim.g.dracula_colorterm = false
-vim.cmd[[colorscheme dracula]]
+vim.g.everforest_background = "hard"
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = vim.api.nvim_create_augroup('custom_highlights_everforest', {}),
+  pattern = 'everforest',
+  callback = function()
+    local config = vim.fn['everforest#get_configuration']()
+    local palette = vim.fn['everforest#get_palette'](config.background, config.colors_override)
+    local set_hl = vim.fn['everforest#highlight']
+
+    set_hl('DiagnosticStatusBarError', palette.red, palette.bg2)
+    set_hl('DiagnosticStatusBarWarn', palette.yellow, palette.bg2)
+    set_hl('DiagnosticStatusBarInfo', palette.blue, palette.bg2)
+    set_hl('DiagnosticStatusBarHint', palette.green, palette.bg2)
+  end
+})
+vim.cmd[[colorscheme everforest]]
+
+-- Dracula Theme adjustments for the status line
+-- vim.cmd[[highlight! link StatusLine DraculaComment]]
+-- vim.cmd[[highlight! link StatusLineNC DraculaSubtle]]
+-- vim.cmd[[highlight User1 guibg=#6272A4]] -- fugitive status colors
+-- vim.cmd[[highlight link LspCodeLens DraculaComment]]
+-- vim.cmd[[highlight link LspCodeLensSeparator DraculaComment]]
+-- vim.g.dracula_colorterm = false
+-- vim.cmd[[colorscheme dracula]]
+
 
 -- use 2 spaces for tabs
 vim.opt.tabstop = 2 -- Number of spaces that a <Tab> in the file counts for
@@ -229,7 +257,7 @@ metals_config = require("metals").bare_config()
 metals_config.init_options.statusBarProvider = "on"
 metals_config.settings = {
   testUserInterface = "Test Explorer",
-  enableSemanticHighlighting = false,
+  enableSemanticHighlighting = true,
 }
 local dap = require("dap")
 dap.configurations.scala = {
@@ -349,6 +377,7 @@ local function metals_bsp_status()
   end
 end
 
+vim.cmd[[highlight! link User1 Visual]] -- fugitive status colors
 local function fugitive_status()
   local _, _, fugitive_status =  string.find(vim.api.nvim_eval('FugitiveStatusline()'), '%[Git%((.+)%)%]')
   if fugitive_status then
@@ -377,16 +406,16 @@ local function lsp_status()
   local info = ""
 
   if count["errors"] ~= 0 then
-    errors = " %#DiagnosticSignError# " .. count["errors"]
+    errors = " %#DiagnosticStatusBarError# " .. count["errors"]
   end
   if count["warnings"] ~= 0 then
-    warnings = " %#DiagnosticSignWarning " .. count["warnings"]
+    warnings = " %#DiagnosticStatusBarWarn# " .. count["warnings"]
   end
   if count["hints"] ~= 0 then
-    hints = " %#DiagnosticSignHint# " .. count["hints"]
+    hints = " %#DiagnosticStatusBarHint# " .. count["hints"]
   end
   if count["info"] ~= 0 then
-    info = " %#DiagnosticSignInfo#󰋼 " .. count["info"]
+    info = " %#DiagnosticStatusBarInfo#󰋼 " .. count["info"]
   end
 
   return errors .. warnings .. hints .. info .. "%#StatusLine#"
@@ -406,17 +435,11 @@ function status_line()
     ' %y ', -- filetype
     metals_bsp_status(),
     '%l,%-2c ', -- line,column
-    '%p%%' -- percentage
+    '%p%% ' -- percentage
   })
 end
 
 vim.opt.statusline = "%!luaeval('status_line()')"
-vim.cmd[[highlight! link StatusLine DraculaComment]]
-vim.cmd[[highlight! link StatusLineNC DraculaSubtle]]
--- color hardcoded from the Dracula theme
-vim.cmd[[highlight User1 guibg=#6272A4]] -- fugitive status colors
-vim.cmd[[highlight link LspCodeLens DraculaComment]]
-vim.cmd[[highlight link LspCodeLensSeparator DraculaComment]]
 
 ----------------------------------
 -- autocompletion using nvim-cmp
